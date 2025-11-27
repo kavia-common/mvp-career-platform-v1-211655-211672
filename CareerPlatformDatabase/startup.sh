@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Fail fast: treat unset vars as errors, exit on failure, catch errors in pipelines
+set -euo pipefail
+
 # Hardening: ensure this container never starts Node/db_visualizer automatically
 # and that no npm/yarn lifecycle scripts (postinstall, prepare, etc.) run during DB startup.
 # These env vars affect any inadvertent npm/yarn usage inside this process environment.

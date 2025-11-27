@@ -1,6 +1,10 @@
-# Exclude optional Node-based visualizer and any Node artifacts from DB image build context
-db_visualizer
-**/node_modules
-**/npm-debug.log
-**/yarn-error.log
-*.log
+# Exclude the optional Node-based db_visualizer tool from the PostgreSQL DB image.
+# This prevents any accidental npm install/npm start/node server.js during build or startup.
+db_visualizer/
+**/db_visualizer/**
+
+# Exclude common Node artifacts if any appear in this folder tree
+**/node_modules/**
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
