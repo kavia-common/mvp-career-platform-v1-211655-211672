@@ -53,6 +53,11 @@ To ensure this DB container never attempts to run the optional Node/Express visu
   - `DB_CONTAINER_MODE=1` to mark container context
   - `NPM_CONFIG_IGNORE_SCRIPTS=true` and `YARN_IGNORE_SCRIPTS=true` to prevent any npm/yarn lifecycle scripts (postinstall/prepare) from running during DB startup
 - A `.dockerignore` excludes `db_visualizer/` from the DB image build context, preventing accidental auto-run by generic Node-based entrypoints.
+- Orchestrator/CI commands that previously chained into `cd db_visualizer && npm start` or `npm install` are now gated behind an explicit environment variable. To run the visualizer from orchestration, set:
+  ```
+  RUN_DB_VISUALIZER=1
+  ```
+  Without this variable, the DB container only starts PostgreSQL and skips all Node-related steps.
 - The helper script `db_visualizer/run_db_visualizer.sh` refuses to run when `DB_CONTAINER_MODE=1` unless you explicitly opt-in by setting:
   ```
   export ALLOW_DB_VISUALIZER_IN_CONTAINER=1

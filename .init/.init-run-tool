@@ -1,4 +1,4 @@
 {
-    "command": "sudo ./startup.sh && cd db_visualizer && PORT=<port> HOST=<host> BROWSER=none npm start",
+    "command": "sudo ./startup.sh; if [ \"${RUN_DB_VISUALIZER:-}\" = \"1\" ]; then cd db_visualizer && PORT=<port> HOST=<host> BROWSER=none npm start; else echo 'RUN_DB_VISUALIZER not set - skipping db_visualizer'; fi",
     "working_directory": "/home/kavia/workspace/code-generation/mvp-career-platform-v1-211655-211672/CareerPlatformDatabase"
 }

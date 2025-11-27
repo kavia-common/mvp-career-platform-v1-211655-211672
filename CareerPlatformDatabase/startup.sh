@@ -144,7 +144,8 @@ EOF
 echo "psql postgresql://${DB_USER}:${DB_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}" > db_connection.txt
 echo "Connection string saved to db_connection.txt"
 
-# Save environment variables to a file
+# Save environment variables to a file (only if db_visualizer directory exists)
+if [ -d "db_visualizer" ]; then
 cat > db_visualizer/postgres.env << EOF
 export POSTGRES_URL="postgresql://localhost:${DB_PORT}/${DB_NAME}"
 export POSTGRES_USER="${DB_USER}"
@@ -152,6 +153,11 @@ export POSTGRES_PASSWORD="${DB_PASSWORD}"
 export POSTGRES_DB="${DB_NAME}"
 export POSTGRES_PORT="${DB_PORT}"
 EOF
+  echo "Environment variables saved to db_visualizer/postgres.env"
+  echo "To use with Node.js viewer, run: source db_visualizer/postgres.env"
+else
+  echo "db_visualizer directory not present; skipping postgres.env generation."
+fi
 
 echo "PostgreSQL setup complete!"
 echo "Database: ${DB_NAME}"
@@ -159,8 +165,7 @@ echo "User: ${DB_USER}"
 echo "Port: ${DB_PORT}"
 echo ""
 
-echo "Environment variables saved to db_visualizer/postgres.env"
-echo "To use with Node.js viewer, run: source db_visualizer/postgres.env"
+# Visualizer environment info is printed above only if db_visualizer directory exists.
 
 echo "To connect to the database, use one of the following commands:"
 echo "psql -h localhost -U ${DB_USER} -d ${DB_NAME} -p ${DB_PORT}"

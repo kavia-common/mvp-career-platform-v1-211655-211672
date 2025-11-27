@@ -1,4 +1,4 @@
 {
-    "command": "cd db_visualizer && npm install",
+    "command": "if [ \"${RUN_DB_VISUALIZER:-}\" = \"1\" ]; then cd db_visualizer && npm install; else echo 'Skipping db_visualizer npm install (RUN_DB_VISUALIZER not set)'; fi",
     "working_directory": "/home/kavia/workspace/code-generation/mvp-career-platform-v1-211655-211672/CareerPlatformDatabase"
 }
