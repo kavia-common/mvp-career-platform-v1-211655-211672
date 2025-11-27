@@ -1,8 +1,23 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Guard: disable running inside DB container unless explicitly allowed.
+if [[ "${DB_CONTAINER_MODE:-}" == "1" && "${ALLOW_DB_VISUALIZER_IN_CONTAINER:-}" != "1" ]]; then
+  echo "Database visualizer is disabled in database container mode."
+  echo "To run it manually inside this container, set ALLOW_DB_VISUALIZER_IN_CONTAINER=1 and re-run."
+  exit 2
+fi
+
 # Optional helper to run the local DB visualizer.
 # This script installs dependencies (if missing) and starts the server.
+
+# When explicitly allowed inside container, allow lifecycle scripts for native deps.
+if [[ "${ALLOW_DB_VISUALIZER_IN_CONTAINER:-}" == "1" ]]; then
+  unset NPM_CONFIG_IGNORE_SCRIPTS || true
+  export NPM_CONFIG_IGNORE_SCRIPTS=false
+  unset YARN_IGNORE_SCRIPTS || true
+  export YARN_IGNORE_SCRIPTS=false
+fi
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$DIR"

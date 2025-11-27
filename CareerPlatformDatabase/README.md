@@ -44,3 +44,17 @@ The visualizer listens on http://localhost:3000 and reads from `db_visualizer/po
 
 - The database startup does not start any Node server. This avoids failures like `MODULE_NOT_FOUND: Cannot find module './lib/express'` when Node dependencies are not installed.
 - All application access to the database should be through the backend APIs. Do not expose the database directly in production environments.
+
+## Hardening and startup behavior
+
+To ensure this DB container never attempts to run the optional Node/Express visualizer during build or startup:
+
+- `startup.sh` sets environment variables:
+  - `DB_CONTAINER_MODE=1` to mark container context
+  - `NPM_CONFIG_IGNORE_SCRIPTS=true` and `YARN_IGNORE_SCRIPTS=true` to prevent any npm/yarn lifecycle scripts (postinstall/prepare) from running during DB startup
+- A `.dockerignore` excludes `db_visualizer/` from the DB image build context, preventing accidental auto-run by generic Node-based entrypoints.
+- The helper script `db_visualizer/run_db_visualizer.sh` refuses to run when `DB_CONTAINER_MODE=1` unless you explicitly opt-in by setting:
+  ```
+  export ALLOW_DB_VISUALIZER_IN_CONTAINER=1
+  ```
+  This keeps the visualizer strictly optional and out of the normal DB startup path.

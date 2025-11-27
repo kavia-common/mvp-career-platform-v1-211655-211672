@@ -1,6 +1,7 @@
 {
   "name": "simple-db-viewer",
   "version": "1.0.0",
+  "private": true,
   "description": "Simple database viewer for PostgreSQL, MySQL, SQLite, and MongoDB",
   "main": "server.js",
   "scripts": {

@@ -1,0 +1,6 @@
+# Exclude optional Node-based visualizer and any Node artifacts from DB image build context
+db_visualizer
+**/node_modules
+**/npm-debug.log
+**/yarn-error.log
+*.log

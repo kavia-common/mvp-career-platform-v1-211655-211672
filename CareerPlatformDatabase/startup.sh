@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Hardening: ensure this container never starts Node/db_visualizer automatically
+# and that no npm/yarn lifecycle scripts (postinstall, prepare, etc.) run during DB startup.
+# These env vars affect any inadvertent npm/yarn usage inside this process environment.
+export DB_CONTAINER_MODE=1
+export NPM_CONFIG_IGNORE_SCRIPTS=true
+export YARN_IGNORE_SCRIPTS=true
+export npm_config_loglevel=error
+
 # Minimal PostgreSQL startup script with full paths
 DB_NAME="myapp"
 DB_USER="appuser"
